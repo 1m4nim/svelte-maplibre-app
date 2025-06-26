@@ -1,48 +1,28 @@
-# Svelte + TS + Vite
+# 2025/06/26
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+## MapLibre GL JSによる地図表示機能の実装
 
-## Recommended IDE Setup
+- ベース地図のスタイルURLに `https://tiles.stadiamaps.com/styles/osm-bright/style.json` を指定していたが、404エラーが発生。
+- 代わりにMapLibre公式の無料サンプルスタイル `https://demotiles.maplibre.org/style.json` を使うよう修正し、地図の正常表示を確認。
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+## OpenRailwayMapの路線図タイルの重ね合わせ
 
-## Need an official Svelte framework?
+- ベースマップに路線図レイヤーを追加するために、OpenRailwayMapのラスタタイルをMapLibreのカスタムレイヤーとして追加。
+- これにより、路線図情報を重ねて表示できるようになった。
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+## Overpass APIを用いた施設検索機能の実装
 
-## Technical considerations
+- 地図の現在表示範囲内で、選択したamenityタグ（例: cafe, restaurantなど）の施設情報をOverpass APIから取得。
+- 取得した施設にマーカーを設置し、クリックでモーダル表示される仕組みを構築。
 
-**Why use this over SvelteKit?**
+## UIの改善
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+- 施設カテゴリを選択できるセレクトボックスと検索ボタンを設置し、ユーザーが任意のカテゴリで施設検索を行えるようにした。
 
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+## GitHubへのSSH接続設定
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+- GitHubへのプッシュでSSH認証エラーが出たため、新規にSSH鍵ペアを作成。
+- 公開鍵をGitHubアカウントに登録し、SSH接続テストを実施。
+- これにより、GitHubリポジトリへの正常なプッシュが可能になった。
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
-
-**Why include `.vscode/extensions.json`?**
-
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
-
-**Why enable `allowJs` in the TS template?**
-
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
-
-**Why is HMR not preserving my local component state?**
-
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
-```
-# svelte-maplibre-app
